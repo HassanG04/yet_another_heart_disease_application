@@ -1,0 +1,267 @@
+.card-custom {
+    border: 1px solid var(--bs-border-color);
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition:
+        background-color 0.4s ease,
+        color 0.4s ease;
+}
+
+/* Small visual cue when toggling themes */
+html.theme-switching body {
+    animation: themePulse 0.32s ease;
+}
+
+@keyframes themePulse {
+    0% { opacity: 0.86; }
+    100% { opacity: 1; }
+}
+
+.content-wrapper {
+    flex: 1;
+}
+
+/* App navbar: bright blue in light mode, dark navy in dark mode */
+.navbar-app {
+    --navbar-app-bg: #0d6efd;
+    background-color: var(--navbar-app-bg) !important;
+    transition:
+        background-color 0.4s ease,
+        box-shadow 0.4s ease,
+        border-color 0.4s ease;
+}
+
+[data-bs-theme="dark"] .navbar-app {
+    --navbar-app-bg: #0c1829;
+}
+
+/* Centered strip on large screens; mobile: full-width row under brand + corner */
+@media (max-width: 991.98px) {
+    .navbar-app .navbar-collapse {
+        flex-basis: 100%;
+        background-color: var(--navbar-app-bg);
+        border-radius: 0 0 0.5rem 0.5rem;
+        margin-top: 0.25rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+
+.navbar-app .navbar-main-nav .nav-link-main {
+    color: rgba(255, 255, 255, 0.92);
+    border-radius: 0.375rem;
+    padding: 0.45rem 0.85rem;
+    font-weight: 500;
+}
+
+.navbar-app .navbar-main-nav .nav-link-main:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-app .navbar-main-nav .nav-link-main.active {
+    color: #fff !important;
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Top-right stack: hamburger above theme (same idea as your red box) */
+.navbar-app .navbar-corner {
+    margin-left: auto;
+}
+
+@media (min-width: 992px) {
+    .navbar-app .navbar-corner {
+        margin-left: 0;
+    }
+}
+
+.nav-theme-toggle {
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: rgba(255, 255, 255, 0.12);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: rgba(255, 255, 255, 0.18);
+    border: none;
+    background: transparent;
+    font-size: 1.35rem;
+    line-height: 1;
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.375rem;
+    opacity: 1 !important;
+    box-shadow: none;
+}
+
+.nav-theme-toggle:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 2px;
+}
+
+.nav-theme-icon {
+    display: inline-block;
+    transition: transform 0.25s ease;
+}
+
+.nav-theme-toggle:hover .nav-theme-icon {
+    transform: scale(1.08);
+}
+
+/* Footer: stronger contrast vs page in both themes */
+.site-footer {
+	transition:
+		background-color 0.4s ease,
+		color 0.4s ease,
+		border-color 0.4s ease;
+}
+
+[data-bs-theme="dark"] .site-footer {
+	background-color: #050608;
+	color: #e2e6ea;
+	border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+[data-bs-theme="light"] .site-footer {
+	background-color: #f1f5f9;
+	color: #1a1d21;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-bs-theme="dark"] .site-footer .footer-warning {
+	color: #ffc107 !important;
+}
+
+[data-bs-theme="light"] .site-footer .footer-warning {
+	color: #b78103 !important;
+}
+
+.result-only {
+    max-width: 42rem;
+    margin-inline: auto;
+}
+
+/* Smooth theme switching */
+.navbar.navbar-app {
+    transition:
+        background-color 0.4s ease,
+        border-color 0.4s ease;
+}
+
+.card,
+.card-custom,
+.form-control,
+.form-select,
+.site-footer,
+.choice-panel {
+    transition:
+        background-color 0.4s ease,
+        color 0.4s ease,
+        border-color 0.4s ease;
+}
+
+/* Primary actions: fully opaque, solid */
+.btn {
+    opacity: 1 !important;
+}
+
+.btn-primary {
+    --bs-btn-bg-opacity: 1;
+    --bs-btn-border-opacity: 1;
+}
+
+/* Hamburger on app navbar */
+.navbar.navbar-app .navbar-toggler {
+    padding: 0.35rem 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 0.375rem;
+    background: transparent;
+}
+
+.navbar.navbar-app .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.22);
+}
+
+.navbar.navbar-app .navbar-toggler-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    background-image: var(--bs-navbar-toggler-icon-bg);
+}
+
+.choice-panel {
+    background-color: var(--bs-tertiary-bg);
+    border-color: var(--bs-border-color) !important;
+}
+
+.field-info-icon {
+    cursor: help;
+    font-size: 1rem;
+}
+
+/* Risk result banner */
+.risk-result {
+    border: none !important;
+}
+
+.risk-result.risk-tier-safe {
+    background-color: #198754 !important;
+    color: #fff !important;
+}
+
+.risk-result.risk-tier-concerned {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.risk-result.risk-tier-doctor {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+}
+
+.risk-result.risk-tier-high {
+    background-color: #4a0000 !important;
+    color: #fff !important;
+}
+
+.risk-result.risk-tier-concerned .risk-tier-caption {
+    color: #212529;
+    opacity: 0.85;
+}
+
+.risk-result:not(.risk-tier-concerned) .risk-tier-caption {
+    opacity: 0.95;
+}
+
+/* How-to page legend chips */
+.risk-legend {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+}
+
+.risk-legend-safe {
+    background: #198754;
+    color: #fff;
+}
+
+.risk-legend-concerned {
+    background: #ffc107;
+    color: #212529;
+}
+
+.risk-legend-doctor {
+    background: #dc3545;
+    color: #fff;
+}
+
+.risk-legend-high {
+    background: #4a0000;
+    color: #fff;
+}

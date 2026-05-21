@@ -1,0 +1,20 @@
+# Data Visualization
+matplotlib
+seaborn
+
+# Data Manipulation & Math
+pandas
+numpy
+
+# Machine Learning & Pipelines
+scikit-learn
+xgboost
+
+# Model Serialization
+joblib
+
+# Jupyter environment
+jupyter
+
+# Web Framework
+django

@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <title>Heart Disease Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="{% static 'predictor/css/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+{% include 'predictor/_nav.html' with active_page="home" %}
+
+<div class="content-wrapper container mt-5">
+    {% if prediction is not None %}
+        <div class="result-only py-5">
+            <h1 class="h3 text-center mb-4">Result</h1>
+            <div class="alert risk-result risk-tier-{{ risk_tier }} text-center shadow-sm mx-auto" style="max-width: 36rem;">
+                {% if prediction == 1 %}
+                    <p class="mb-1 fs-5"><strong>Heart disease</strong> is more likely according to the model.</p>
+                {% else %}
+                    <p class="mb-1 fs-5"><strong>No heart disease</strong> is more likely according to the model.</p>
+                {% endif %}
+                <p class="mb-0 fs-3 fw-bold">{{ probability }}% Risk</p>
+                <p class="mb-0 small risk-tier-caption">{{ risk_tier_label }}</p>
+            </div>
+            <div class="text-center mt-4">
+                <a class="btn btn-primary btn-lg" href="{% url 'predict' %}">Another try</a>
+                <p class="text-muted small mt-3 mb-0">Returns to the form to enter new patient data.</p>
+            </div>
+        </div>
+    {% else %}
+    <p class="text-center text-muted">Assistive screening tool based on the UCI dataset</p>
+
+    {% if error %}
+        <div class="alert alert-warning text-center fs-5">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <div class="card shadow-sm p-4 mt-4">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Age (years)
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Patient age in full years."></i>
+                    </label>
+                    <input type="number" name="age" class="form-control" required value="50" min="1" max="120">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Sex
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Biological sex as recorded in the dataset (used by the model as a feature)."></i>
+                    </label>
+                    <div class="border rounded p-3 choice-panel">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sex" id="sex-male" value="1" checked>
+                            <label class="form-check-label" for="sex-male">Male</label>
+                        </div>
+                        <div class="form-check mb-0">
+                            <input class="form-check-input" type="radio" name="sex" id="sex-female" value="0">
+                            <label class="form-check-label" for="sex-female">Female</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Chest pain type
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Type of chest pain reported: typical / atypical angina, non-anginal, or asymptomatic."></i>
+                    </label>
+                    <select name="cp" class="form-select" required>
+                        <option value="0">Typical angina</option>
+                        <option value="1">Atypical angina</option>
+                        <option value="2" selected>Non-anginal pain</option>
+                        <option value="3">Asymptomatic</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Resting blood pressure
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Resting blood pressure in mm Hg on admission."></i>
+                    </label>
+                    <input type="number" name="trestbps" class="form-control" required value="120">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Serum cholesterol
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Serum cholesterol in mg/dL."></i>
+                    </label>
+                    <input type="number" name="chol" class="form-control" required value="240">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Fasting blood sugar
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Whether fasting blood sugar is above 120 mg/dL."></i>
+                    </label>
+                    <p class="small text-muted mb-2">Fasting blood sugar above 120 mg/dL?</p>
+                    <div class="border rounded p-3 choice-panel">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="fbs" id="fbs-no" value="0" checked>
+                            <label class="form-check-label" for="fbs-no">No (not above 120 mg/dL)</label>
+                        </div>
+                        <div class="form-check mb-0">
+                            <input class="form-check-input" type="radio" name="fbs" id="fbs-yes" value="1">
+                            <label class="form-check-label" for="fbs-yes">Yes (above 120 mg/dL)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Resting ECG
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Resting electrocardiogram result category."></i>
+                    </label>
+                    <select name="restecg" class="form-select" required>
+                        <option value="0" selected>Normal</option>
+                        <option value="1">ST-T wave abnormality</option>
+                        <option value="2">Left ventricular hypertrophy</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Max heart rate (thalach)
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Maximum heart rate achieved during exercise test."></i>
+                    </label>
+                    <input type="number" name="thalach" class="form-control" required value="150">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Exercise angina
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Whether exercise brings on angina (chest pain)."></i>
+                    </label>
+                    <div class="border rounded p-3 choice-panel">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exang" id="exang-no" value="0" checked>
+                            <label class="form-check-label" for="exang-no">No</label>
+                        </div>
+                        <div class="form-check mb-0">
+                            <input class="form-check-input" type="radio" name="exang" id="exang-yes" value="1">
+                            <label class="form-check-label" for="exang-yes">Yes</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        ST depression (oldpeak)
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="ST depression induced by exercise relative to rest."></i>
+                    </label>
+                    <input type="number" step="any" name="oldpeak" class="form-control" required value="1.5">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Slope of peak ST segment
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Slope of the ST segment during exercise."></i>
+                    </label>
+                    <select name="slope" class="form-select" required>
+                        <option value="0">Upsloping</option>
+                        <option value="1" selected>Flat</option>
+                        <option value="2">Downsloping</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Major vessels colored (fluoroscopy)
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Number of major blood vessels colored by fluoroscopy (0–3)."></i>
+                    </label>
+                    <select name="ca" class="form-select" required>
+                        <option value="0" selected>None</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label d-inline-flex align-items-center gap-2">
+                        Thalassemia
+                        <i class="bi bi-info-circle text-info field-info-icon" data-bs-toggle="tooltip" title="Thalassemia / blood disorder category as encoded in the dataset."></i>
+                    </label>
+                    <select name="thal" class="form-select" required>
+                        <option value="3" selected>Normal</option>
+                        <option value="6">Fixed defect</option>
+                        <option value="7">Reversible defect</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-4">Analyze patient data</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<footer class="site-footer text-center py-3 mt-auto">
+    <div class="container">
+        <p class="mb-0 footer-warning fw-bold">This is only experimental and should be used with a doctor present.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'predictor/js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <title>How to use — Heart Disease Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="{% static 'predictor/css/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+{% include 'predictor/_nav.html' with active_page="howto" %}
+
+<div class="content-wrapper container mt-5 mb-5">
+    <h1 class="h2 text-primary mb-4">How to use this tool</h1>
+    <div class="card card-custom shadow-sm p-4 mb-4">
+        <h2 class="h5">What this is</h2>
+        <p class="mb-0">This website runs a machine learning model trained on the UCI Cleveland heart disease dataset. It estimates the <strong>probability of heart disease</strong> from clinical features you enter. It is an educational screening aid, not a diagnosis.</p>
+    </div>
+
+    <div class="card card-custom shadow-sm p-4 mb-4">
+        <h2 class="h5">Using the form (Home)</h2>
+        <ol class="mb-0">
+            <li class="mb-2">Open <a href="{% url 'predict' %}">Home</a> and enter values that match the patient or scenario you want to assess.</li>
+            <li class="mb-2">Each field has an <i class="bi bi-info-circle text-info"></i> icon: hover or focus it for a short explanation.</li>
+            <li class="mb-2">Categorical fields use plain language (for example Male/Female, Yes/No, or ECG types) instead of numeric codes. The correct code is sent to the model automatically.</li>
+            <li class="mb-0">Click <strong>Analyze patient data</strong> to run the model.</li>
+        </ol>
+    </div>
+
+    <div class="card card-custom shadow-sm p-4 mb-4">
+        <h2 class="h5">Understanding the result</h2>
+        <p>After analysis you will see whether the model predicts heart disease or not, together with a <strong>probability percentage</strong> labeled as <strong>Risk</strong>. The panel is color-coded:</p>
+        <ul>
+            <li><span class="risk-legend risk-legend-safe">Green</span> — lower estimated risk (safer band).</li>
+            <li><span class="risk-legend risk-legend-concerned">Yellow</span> — elevated risk; worth attention.</li>
+            <li><span class="risk-legend risk-legend-doctor">Red</span> — higher risk; you should discuss with a clinician.</li>
+            <li><span class="risk-legend risk-legend-high">Dark red</span> — high alert; prompt medical follow-up is strongly advised.</li>
+        </ul>
+        <p class="mb-0 text-warning"><strong>Important:</strong> Only a qualified healthcare professional can diagnose or rule out heart disease. Do not use this tool as a substitute for medical care.</p>
+    </div>
+
+    <div class="card card-custom shadow-sm p-4 mb-0">
+        <h2 class="h5">Dataset and methodology</h2>
+        <p class="mb-0">For background on the dataset, model, and project goals, see the <a href="{% url 'info' %}">Info</a> page.</p>
+    </div>
+</div>
+
+<footer class="site-footer text-center py-3 mt-auto">
+    <div class="container">
+        <p class="mb-0 footer-warning fw-bold">This is only experimental and should be used with a doctor present.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'predictor/js/main.js' %}"></script>
+</body>
+</html>
